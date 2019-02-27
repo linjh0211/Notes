@@ -12,3 +12,8 @@ sudo pacman -S name
 sudo pacman -Fs name
 ```
 
+## 查询软件包内容
+
+```shell
+pacman -Ql name
+```
