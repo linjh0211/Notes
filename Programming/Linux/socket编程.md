@@ -59,8 +59,11 @@ int bind( int sockfd , const struct sockaddr * my_addr, socklen_t addrlen);
 
 
 ```c
-socket(AF_INET,SOCK_DGRAM,0)
- //AF——INET--ipv4, SOCK_DGRAM--支持UDP连接    
+#include <sys/socket.h>
+int socket( int af, int type, int protocol);
+af：一个地址描述。目前仅支持AF_INET格式，也就是说ARPA Internet地址格式。ipv4
+type：指定socket类型。新套接口的类型描述类型，如TCP（SOCK_STREAM）和UDP（SOCK_DGRAM）。常用的socket类型有，SOCK_STREAM、SOCK_DGRAM、SOCK_RAW、SOCK_PACKET、SOCK_SEQPACKET等等。
+protocol：顾名思义，就是指定协议。套接口所用的协议。如调用者不想指定，可用0。常用的协议有，IPPROTO_TCP、IPPROTO_UDP、IPPROTO_STCP、IPPROTO_TIPC等，它们分别对应TCP传输协议、UDP传输协议、STCP传输协议、TIPC传输协议。
 ```
 
 ```c
@@ -182,3 +185,81 @@ struct socket
     }
 ```
 
+
+
+## Part 3 导入动态链接库
+
+```c
+#在Makefile文件最后面加上
+target_link_libraries(项目名 .dll名字)
+```
+
+
+
+## PART 4 DNS报文格式
+
+### Note:
+
+1. recvbuf 是除了dns header之外的部分
+
+   recvbuf =dns header +  dns具体内容
+
+### Case 1: 在本地域名解析表中找到域名
+
+【对比query报文和answer报文】
+
+![1551690717595](C:\Users\XXX\AppData\Roaming\Typora\typora-user-images\1551690717595.png)
+
+
+
+1. *定义transaction ID( unsigned short ) 
+
+2. 修改flag位 为0x8180
+
+![1551664378078](C:\Users\XXX\AppData\Roaming\Typora\typora-user-images\1551664378078.png)
+
+3. 修改Question 为0 或1
+
+4. Answer域，Authority ，Additional不需要修改
+
+5. 构造DNS Answer部分
+
+   ![1551666555401](C:\Users\XXX\AppData\Roaming\Typora\typora-user-images\1551666555401.png)
+
+   
+
+   (1) 前4个字节为 0xc00c ，具体是什么，我也不太知道
+
+   (2) Type 定义为0x0001
+
+   (3) Class 定义为0x0001
+
+   (4) timelive 定义为0x0000 007b
+
+   (5)  Data length 定义为0x0004
+
+   (6) 之后的16个字节为查询到的ip地址
+
+### Case 2 在域名解析表中找不到
+
+##### 1.ID转换
+
+将接收到的ID，转成本地字节序，再将主机信息一并存入ID转换表中, 再换成自己设计的id（需要转成网络字节序）
+
+![1551693265207](C:\Users\XXX\AppData\Roaming\Typora\typora-user-images\1551693265207.png)
+
+##### 2.转发DNS报文
+
+##### 3.接收DNS报文
+
+##### 4.ID转换
+
+获取接收到的ID，转成本地字节序，再到ID 转换表中去查找得到原来的ID，和请求主机的信息。 
+
+将recvbuf中的ID 换掉 ，转发回请求主机
+
+
+
+
+
+ 
