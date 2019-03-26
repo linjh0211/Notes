@@ -142,7 +142,25 @@ LRESULT CALLBACK WndProc(HWND hwnd ,UINT message, WPARAM wparam,LPARAM lParam){
 
 **A:** main()用在console程序 ，如果要用到gui,最好是有WinMain();
 
-#### 2. 
+#### 2.ADD方法画直线的问题
+
+**A:**需要主要增量计算必需是double类型，注意类型转换的问题
+
+#### 3.Bresenham方法画直线的问题
+
+**A:**课件中只给出了斜率为0~1取值的情况，还应考虑-1~0及斜率绝对值大于1的情况。
+
+####  4.画阴影时，为什么有MN个点，就一定是MN条边？
+
+**A:**  当只考虑一个外环，一个内环或者没有内环的情况时，有MN 个点就一定是MN条边。
+
+
+
+
+
+
+
+
 
 
 
