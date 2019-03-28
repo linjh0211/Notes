@@ -1,0 +1,54 @@
+autostart = false		#设置为false，为ture表示每次默认启动所有设备
+
+[localhost]
+port = 7200		#本地端口
+udp = 10000		
+workingdir = ..\tmp\	#工作目录，存放配置信息
+
+    [[router R1]]		#设备名，router 设备名
+    image = ..\ios\unzip-c7200-is-mz.122-37.bin
+    model = 7200		#CPU型号
+    console = 3001		#设备号
+    npe = npe-400		
+    ram = 64		#分配内存，默认64
+    confreg = 0x2102	#2102表示启动后读取上次配置，2104表示不读取
+    exec_area = 64		
+    mmap = false		#默认false,ture表示映射，当内存不够时开
+    slot0 = PA-C7200-IO-FE	#插槽1
+    slot1 = PA-4T		#插槽2
+    f0/0 = PC1 f0/0		#表示 千兆以太网插槽的0号串口 接 pc1 的千兆以太网接口的0号串口
+    s1/1 = R2 s1/0	
+
+
+    [[router R2]]
+    image = ..\ios\unzip-c7200-is-mz.122-37.bin
+    model = 7200
+    console = 3002
+    npe = npe-400
+    ram = 64
+    confreg = 0x2102
+    exec_area = 64
+    mmap = false  
+    slot0 = PA-C7200-IO-FE
+    slot1 = PA-4T
+    f0/0 = PC2 f0/0
+
+    
+    [[router PC1]]
+	model = 2621
+	ram = 20
+	image = ..\ios\unzip-c2600-i-mz.121-3.T.bin
+	mmap = False
+	confreg = 0x2102
+	console = 3003
+    
+    [[router PC2]]
+	model = 2621
+	ram = 20
+	image = ..\ios\unzip-c2600-i-mz.121-3.T.bin
+	mmap = False
+	confreg = 0x2102
+	console = 3004
+
+
+    
