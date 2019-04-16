@@ -58,3 +58,7 @@ git pull
 
 ```
 
+## 版本回退
+
+- git reset -- hard 目标版本号
+- git push -f
